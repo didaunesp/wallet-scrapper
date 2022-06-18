@@ -1,11 +1,25 @@
+import { BigNumber } from "ethers";
+import getbalance from "./getBalance";
 import getProvider from "./getProvider";
 
-const getbalances = async (address: string) => {
-  const provider = await getProvider();
-  const balances = await provider.getBalance(
-    "0xa9FDeb97d2ACad58eC48d0406Ed2Eb6bB96CfDB5"
-  );
-  return balances;
+type Balance = {
+  token: string;
+  amount: any;
 };
 
-export default getbalances;
+const getBalances = async (address: string): Promise<Balance[]> => {
+  const provider = await getProvider();
+  const bnbBalance = await getBnbBalance(address);
+  return [bnbBalance];
+};
+
+const getBnbBalance = async (address: string): Promise<Balance> => {
+  const amount = await getbalance(address);
+  console.log("amount :>> ", amount);
+  return {
+    token: "bnb",
+    amount: amount,
+  };
+};
+
+export { getBalances, Balance };

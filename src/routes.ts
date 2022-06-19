@@ -4,7 +4,7 @@ import { getBalances } from "./getBalances";
 const routes = Router();
 
 routes.get(
-  "/get-balances",
+  "/get-balances/:address",
   async (req: Request, res: Response): Promise<void> => {
     const address = req.params.address;
     const balances = await getBalances(address);

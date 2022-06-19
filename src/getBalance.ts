@@ -1,6 +1,6 @@
-import { Request, Response } from "express";
 import getProvider from "./getProvider";
 import { ethers } from "ethers";
+import ERC20 from "./ERC20";
 
 const getbalance = async (address: string): Promise<string> => {
   try {
@@ -16,7 +16,12 @@ const getbalance = async (address: string): Promise<string> => {
 };
 
 const getERC20Balance = async (contract: string, address: string) => {
-  return 0;
+  const provider = await getProvider();
+  console.log("contract :>> ", contract);
+  console.log("address :>> ", address);
+  const erc20 = new ethers.Contract(contract, ERC20, provider);
+  const balance = await erc20.balanceOf(address);
+  return ethers.utils.formatEther(balance);
 };
 
-export default getbalance;
+export { getbalance, getERC20Balance };

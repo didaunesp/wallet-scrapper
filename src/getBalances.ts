@@ -1,5 +1,4 @@
-import { getbalance, getERC20Balance } from "./getBalance";
-import getProvider from "./getProvider";
+import { getbalance, getERC20Balance } from "./provider";
 import tokenList from "./tokenList";
 
 type Balance = {
@@ -8,7 +7,6 @@ type Balance = {
 };
 
 const getBalances = async (address: string): Promise<Balance[]> => {
-  const provider = await getProvider();
   const bnbBalance = await getBnbBalance(address);
   const web3TokenBalances = await getWeb3TokenBalances(address);
   return [bnbBalance, ...web3TokenBalances];

@@ -1,10 +1,6 @@
 import { nativeBalance, ERC20Balance } from "./provider";
 import tokenList from "./tokenList";
-
-type Balance = {
-  token: string;
-  amount: any;
-};
+import { Token, Balance } from "./types";
 
 const getBalances = async (address: string): Promise<Balance[]> => {
   const bnbBalance = await getBnbBalance(address);
@@ -22,24 +18,29 @@ const getBnbBalance = async (address: string): Promise<Balance> => {
 
 const getWeb3TokenBalances = async (address: string): Promise<Balance[]> => {
   return Promise.all(
-    tokenList.map(async (token): Promise<Balance> => {
-      try {
-        return {
-          token: token.name,
-          amount: await ERC20Balance(token.contract, address),
-        };
-      } catch (error) {
-        console.log(error);
-        console.log(
-          `error in obtaining ${token.name} balance for address ${address}`
-        );
-        return {
-          token: token.name,
-          amount: 0,
-        };
-      }
-    })
+    tokenList.map((token) => getWeb3TokenBalance(token, address))
   );
+};
+
+const getWeb3TokenBalance = async (
+  token: Token,
+  address: string
+): Promise<Balance> => {
+  try {
+    return {
+      token: token.name,
+      amount: await ERC20Balance(token.contract, address),
+    };
+  } catch (error) {
+    console.log(error);
+    console.log(
+      `error in obtaining ${token.name} balance for address ${address}`
+    );
+    return {
+      token: token.name,
+      amount: 0,
+    };
+  }
 };
 
 export { getBalances, Balance };

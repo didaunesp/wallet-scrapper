@@ -1,3 +1,4 @@
+import { Token } from "./types";
 export default [
   {
     name: "btcb",
@@ -19,4 +20,4 @@ export default [
     name: "link",
     contract: "0xf8a0bf9cf54bb92f17374d9e9a321e6a111a51bd",
   },
-];
+] as Token[];

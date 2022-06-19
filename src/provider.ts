@@ -27,7 +27,10 @@ const nativeBalance = async (address: string): Promise<string> => {
   }
 };
 
-const ERC20Balance = async (contract: string, address: string) => {
+const ERC20Balance = async (
+  contract: string,
+  address: string
+): Promise<string> => {
   try {
     const erc20 = new ethers.Contract(contract, ERC20, provider());
     const balance = await erc20.balanceOf(address);

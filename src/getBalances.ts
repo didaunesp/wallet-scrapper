@@ -1,4 +1,4 @@
-import { getbalance, getERC20Balance } from "./provider";
+import { nativeBalance, ERC20Balance } from "./provider";
 import tokenList from "./tokenList";
 
 type Balance = {
@@ -13,7 +13,7 @@ const getBalances = async (address: string): Promise<Balance[]> => {
 };
 
 const getBnbBalance = async (address: string): Promise<Balance> => {
-  const amount = await getbalance(address);
+  const amount = await nativeBalance(address);
   return {
     token: "bnb",
     amount: amount,
@@ -26,7 +26,7 @@ const getWeb3TokenBalances = async (address: string): Promise<Balance[]> => {
       try {
         return {
           token: token.name,
-          amount: await getERC20Balance(token.contract, address),
+          amount: await ERC20Balance(token.contract, address),
         };
       } catch (error) {
         console.log(error);

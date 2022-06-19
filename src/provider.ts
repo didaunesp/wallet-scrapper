@@ -1,8 +1,8 @@
-import { ethers } from "ethers";
 import "dotenv/config";
 import ERC20 from "./ERC20";
+import { ethers } from "ethers";
 
-const getProvider = async () => {
+const provider = () => {
   try {
     const nodeUrl = process.env.NODE_URL;
     const apiKey = process.env.API_KEY;
@@ -17,10 +17,9 @@ const getProvider = async () => {
   }
 };
 
-const getbalance = async (address: string): Promise<string> => {
+const nativeBalance = async (address: string): Promise<string> => {
   try {
-    const provider = await getProvider();
-    const balance = await provider.getBalance(address);
+    const balance = await provider().getBalance(address);
     return ethers.utils.formatEther(balance);
   } catch (error) {
     console.log(error);
@@ -28,10 +27,9 @@ const getbalance = async (address: string): Promise<string> => {
   }
 };
 
-const getERC20Balance = async (contract: string, address: string) => {
+const ERC20Balance = async (contract: string, address: string) => {
   try {
-    const provider = await getProvider();
-    const erc20 = new ethers.Contract(contract, ERC20, provider);
+    const erc20 = new ethers.Contract(contract, ERC20, provider());
     const balance = await erc20.balanceOf(address);
     return ethers.utils.formatEther(balance);
   } catch (error) {
@@ -42,4 +40,4 @@ const getERC20Balance = async (contract: string, address: string) => {
   }
 };
 
-export { getbalance, getERC20Balance };
+export { nativeBalance, ERC20Balance };
